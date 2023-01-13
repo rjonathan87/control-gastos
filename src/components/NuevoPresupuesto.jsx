@@ -7,6 +7,7 @@ const NuevoPresupuesto = ({
   setIsValidPresupuesto
 }) => {
   const [mensaje, setMensaje] = useState('')
+  
   const handlePresupuesto = e => {
     e.preventDefault()
 
