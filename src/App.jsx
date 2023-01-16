@@ -29,7 +29,7 @@ function App() {
     setAnimarModal(false)
     setTimeout(() => {
       setModal(false)
-    }, 500);
+    }, 600);
   }
 
   return (
