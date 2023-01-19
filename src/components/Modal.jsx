@@ -1,16 +1,37 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import IconClose from '../img/cerrar.svg'
 import Mensaje from './Mensaje'
 
-const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
+const Modal = ({
+  setModal, 
+  animarModal, 
+  setAnimarModal, 
+  guardarGasto,
+  gastoEditar,
+  setGastoEditar
+}) => {
   
   const [nombre_gasto, setNombre_gasto] = useState('')
   const [cantidad_gasto, setCantidad_gasto] = useState(0)
   const [categoria_gasto, setCategoria_gasto] = useState('')
+  const [id, setId] = useState('')
+  const [fecha, setFecha] = useState('')
 
   const [mensaje, setMensaje] = useState('')
+
+  useEffect(() => {
+    if(Object.keys(gastoEditar).length > 0){
+      setNombre_gasto(gastoEditar.nombre_gasto)
+      setCantidad_gasto(gastoEditar.cantidad_gasto)
+      setCategoria_gasto(gastoEditar.categoria_gasto)
+      setId(gastoEditar.id)
+      setFecha(gastoEditar.fecha)
+    }
+  }, [])
+  
   
   const ocultarModal = () => {
+    setGastoEditar({})
     setAnimarModal(false)
     setTimeout(() => {
       setModal(false)
@@ -28,7 +49,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
       return 
     }
 
-    guardarGasto({nombre_gasto,cantidad_gasto,categoria_gasto})
+    guardarGasto({nombre_gasto,cantidad_gasto,categoria_gasto,id,fecha})
   }
 
   return (
@@ -44,7 +65,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
       <form 
         className={`formulario ${animarModal ? "animar" : "cerrar"}`}
       >
-        <legend>Nuevo Gasto</legend>
+        <legend>{ gastoEditar.nombre_gasto ? 'Editar gasto' : 'Nuevo Gasto' }</legend>
         <div className='campo'>
           <label htmlFor="nombre_gasto">Nombre del gasto</label>
           <input type="text" name="nombre_gasto" id="nombre_gasto" placeholder='Introduce el nombre del gasto' 
@@ -75,7 +96,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
             <option value="suscripciones">Suscripciones</option>
           </select>
         </div>
-        <input type="submit" value="Añadir gasto" onClick={handleSubmit} />
+        <input type="submit" value={ gastoEditar.nombre_gasto ? 'Guardar' : 'Agregar' } onClick={handleSubmit} />
         {mensaje && <Mensaje tipo="error">{mensaje}</Mensaje>}
       </form>
     </div>
